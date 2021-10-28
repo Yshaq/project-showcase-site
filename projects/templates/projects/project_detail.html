@@ -1,0 +1,35 @@
+{% extends 'projects/base.html' %}
+{% block title %}{{project.title}}{% endblock %}
+
+{% block content %}
+
+<h1>{{project.title}}</h1>
+<hr>
+<h2>Tags:</h2>
+{% for tag in project.tags.all %}
+<ul>
+    <li>{{tag.name}}</li>
+</ul>
+{% endfor %}
+
+<hr>
+{{project.description}}
+<hr>
+<p><a href="{{project.source_link}}">Source Code</a></p>
+<p><a href="{{project.demo_link}}">Try it out!</a></p>
+<hr>
+<h2>Reviews</h2>
+
+<p>Total Votes: {{project.vote_total}}</p>
+<p>Vote Ratio: {{project.vote_ratio}}%</p>
+
+<hr>
+
+{% for review in project.review_set.all %}
+{{review.body}}
+<hr>
+{% endfor %}
+
+
+
+{% endblock %}
