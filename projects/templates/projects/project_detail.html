@@ -30,6 +30,11 @@
 <hr>
 {% endfor %}
 
+<p>
+    Delete this project:
+    <a href="{% url 'delete-project' project.id %}">DELETE</a>
+</p>
+
 
 
 {% endblock %}

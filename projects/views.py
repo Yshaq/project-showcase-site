@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 from .models import Project, Review, Tag
+from .forms import ProjectForm
 
 # Create your views here.
 class ProjectListView(generic.ListView):
@@ -13,4 +14,47 @@ class ProjectListView(generic.ListView):
 class ProjectDetailView(generic.DetailView):
     model = Project
     template_name = 'projects/project_detail.html'
+
+def CreateProjectView(request):
+    form = ProjectForm()
+
+    if (request.method == 'POST'):
+        form = ProjectForm(request.POST)
+        if (form.is_valid()):
+            form.save()
+            return redirect('project-list')
+
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'projects/project_form.html', context)
+
+def UpdateProjectView(request, id):
+    project = get_object_or_404(Project, pk=id)
+    form = ProjectForm(instance=project)
+
+    if (request.method == 'POST'):
+        form = ProjectForm(request.POST, instance=project)
+        if (form.is_valid()):
+            form.save()
+            return redirect('project-list')
+
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'projects/project_form.html', context)
+
+def DeleteProjectView(request, id):
+    project = get_object_or_404(Project, pk=id)
+    if (request.method == 'POST'):
+        project.delete()
+        return redirect('project-list')
+
+    context = {'project': project}
+    return render(request, 'projects/delete_template.html', context)
+
             
