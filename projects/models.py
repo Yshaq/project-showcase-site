@@ -1,8 +1,9 @@
 from django.db import models
-
+from users.models import Profile
 # Create your models here.
 class Project(models.Model):
     title = models.CharField(max_length=200)
+    owner = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
     description = models.TextField(max_length=1000, null=True, blank=True)
     tags = models.ManyToManyField('Tag', blank=True)
     vote_total = models.IntegerField(default=0, null=True, blank=True)
